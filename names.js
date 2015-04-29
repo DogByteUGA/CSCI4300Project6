@@ -23,13 +23,15 @@ function searchClicked(){
 		"babynames.php", 
 		{
 		method: "get",
-		parameters: "type=meaning&name=" + name
-		
+		parameters: "type=meaning&name=" + name,
+		onSuccess: getNames
 	}
 	);
 
 }
-function getNames(){
+function getNames(ajax){
+	var list = ajax.responseText;
+		alert(list);
 
 	
 }

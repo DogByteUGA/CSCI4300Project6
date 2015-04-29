@@ -1,20 +1,9 @@
 <?php
 
-$qType = isset($_GET['type']) ? $_GET['type'] : '';
-//$qType= isset($_GET['meaning']) ? $_GET['meaning'] : $qType;
+$qType = isset($_GET['type']) ? htmlspecialchars($_GET['type']) : '';
+$meaningName = isset($_GET['name']) ? htmlspecialchars($_GET['name']) : '';
+$meaningName = strtoupper($meaningName);
 
-
-
-
-//echo $meaningName;
-/*
-$qType = $_REQUEST['q'];
-
-*/
-//$qType = strtolower($qType);
-
-//var_dump($qType);
-echo $qType;
 if ($qType == "list"){
 	$listFile = fopen("list.txt","r+") or die ("Unable to open file!");
 	while(!feof($listFile)){
@@ -25,23 +14,36 @@ fclose($listFile);
 
 }
 else if ($qType == "meaning"){
-	$listFile = fopen("meanings.txt","r+") or die ("Unable to open file!");
-	$lineArray;
-	$meaningName = $qType['name'];
-	var_dump($meaningName);
-	while(!feof($listFile)){ // this should be while the name isnt found
-		$lineArray = fgets($listFile);
-		echo $lineArray;
-		$wordArray = explode(' ',$lineArray,0);
-		if($wordArray[0] == $meaningName){
-			echo $lineArray;
-			break;
+	
+	    //$listFile = fopen("meanings.txt","r+") or die ("Unable to open file!");
+		$lineArray = file("meanings.txt",FILE_IGNORE_NEW_LINES);
+		$go = TRUE;
+		//$wordArray[0] = strtolower($wordArray[0]);
+		$wordArray;
 
-		}
-	}
+		$i = 0;
+		while($go == TRUE){
+			$wordArray = explode(" ",$lineArray[$i]);
+			$wordArray[0] = strtoupper($wordArray[0]);
+			//echo $wordArray[0];
+			if($wordArray[0] == $meaningName){
+				echo $lineArray[$i];
+				$go = FALSE;
+			}
+			$i++;
+
+			//echo $wordArray[0];
+
+			 //echo "<div><p>The name <strong> $meaningName </strong> means...</p><hr/><p><q>Welsh, English From the Old Welsh masculine name Morcant, which was
+        //possibly derived from Welsh more sea bla bla.</q></p></div>";
+			//echo $wordArray[0];
+
+			
+	     }
+	     //fclose($listFile);
 
 
-fclose($listFile);
+
 
 }
 else{
