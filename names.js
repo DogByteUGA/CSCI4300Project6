@@ -4,7 +4,7 @@ window.onload = function(){
 		"babynames.php", 
 		{
 		method: "get",
-		parameters: "q=list",
+		parameters: "type=list",
 		onSuccess: loadNames
 		
 	}
@@ -15,6 +15,19 @@ window.onload = function(){
 
 function searchClicked(){
 	$("resultsarea").show();
+	var list = document.getElementById("allnames");
+	var name = list[list.selectedIndex].value;
+	//alert(name);
+
+	new Ajax.Request(
+		"babynames.php", 
+		{
+		method: "get",
+		parameters: "type=meaning&name=" + name
+		
+	}
+	);
+
 }
 function getNames(){
 
