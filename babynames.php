@@ -1,9 +1,9 @@
 <?php
-
+//get the type of query
 $qType = isset($_GET['type']) ? htmlspecialchars($_GET['type']) : '';
 $meaningName = isset($_GET['name']) ? htmlspecialchars($_GET['name']) : '';
-$meaningName = strtoupper($meaningName);
-
+$meaningName = strtoupper($meaningName); // the name we are searching for
+//get all names for dropdown for list
 if ($qType == "list"){
 	$listFile = fopen("list.txt","r+") or die ("Unable to open file!");
 	while(!feof($listFile)){
@@ -13,37 +13,32 @@ if ($qType == "list"){
 fclose($listFile);
 
 }
+//match the name in meanings.txt file
 else if ($qType == "meaning"){
-	
-	    //$listFile = fopen("meanings.txt","r+") or die ("Unable to open file!");
+		//line array holds a line of the file at every index
 		$lineArray = file("meanings.txt",FILE_IGNORE_NEW_LINES);
 		$go = TRUE;
-		//$wordArray[0] = strtolower($wordArray[0]);
 		$wordArray;
-
 		$i = 0;
+		//while we haven't found the name
+		//IF GO IS NEVER SET TO FALSE, THEN ECHO THAT THERE IS NO MEANINGFUL DATA
 		while($go == TRUE){
-			$wordArray = explode(" ",$lineArray[$i]);
+			//get each word of the line and check if the names match
+			$wordArray = explode(" ",htmlspecialchars($lineArray[$i]));
 			$wordArray[0] = strtoupper($wordArray[0]);
-			//echo $wordArray[0];
+			$len = strlen($wordArray[0]);
+			//if the names match, parse the name out of the string and return as instructed
 			if($wordArray[0] == $meaningName){
-				echo $lineArray[$i];
+				$lineArray[$i] = substr($lineArray[$i],$len);
+				//echo $lineArray[$i];
+				echo "<div><p>The name <strong> $meaningName </strong> means...</p><hr/><p><q> $lineArray[$i] </q></p></div>";
+
+
 				$go = FALSE;
 			}
 			$i++;
-
-			//echo $wordArray[0];
-
-			 //echo "<div><p>The name <strong> $meaningName </strong> means...</p><hr/><p><q>Welsh, English From the Old Welsh masculine name Morcant, which was
-        //possibly derived from Welsh more sea bla bla.</q></p></div>";
-			//echo $wordArray[0];
-
 			
 	     }
-	     //fclose($listFile);
-
-
-
 
 }
 else{
