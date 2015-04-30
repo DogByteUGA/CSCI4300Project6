@@ -18,6 +18,7 @@ function searchClicked(){
 	$("resultsarea").show();
 	var list = document.getElementById("allnames");
 	var name = list[list.selectedIndex].value;
+	var gender = document.getElementsByName("gender")[0].value;
 //get request then go to getnames function
 	new Ajax.Request(
 		"babynames.php", 
@@ -28,15 +29,33 @@ function searchClicked(){
 	}
 	);
 
+	new Ajax.Request(
+		"babynames.php", 
+		{
+		method: "get",
+		parameters: "type=rank&name=" + name + "&gender=" +gender,
+		onSuccess: popularity
+	}
+	);
+
 }
 //do something with meaning response
 function getNames(ajax){
 	var list = ajax.responseText;
 	$('meaning').innerHTML = list;
-	//	alert(list);
+	//popularity functionality
+
+
 
 	
 }
+
+function popularity(ajax){
+	var popular = ajax.responseText;
+	alert(popular);
+
+}
+//load the names into the dropdown
 function loadNames(ajax){
 	var list = ajax.responseText.split("\n");
 	var dropList = $("allnames");
